@@ -20,73 +20,47 @@ if platform == 'centos' || platform == 'fedora'
   end
 end
 
-bash 'Update cache and Update' do
+if platform == 'centos' || platform == 'fedora'
+  bash 'Update cache and Update' do
   code <<-EOH
-  yum makecache && yum update -y
-  touch /tmp/updated
-  EOH
-  action :run
-  not_if { File.exist?('/tmp/updated') }
+    yum makecache && yum update -y
+    touch /tmp/updated
+    EOH
+    action :run
+    not_if { File.exist?('/tmp/updated') }
+  end
 end
 
 package 'nginx' do
   action :install
 end
 
-bash 'Create Sites Directories' do
-  code <<-EOH
-  mkdir /etc/nginx/sites-enabled
-  mkdir /etc/nginx/sites-available
-  touch /tmp/directories
-  EOH
-  action :run
-  not_if { File.exist?('/tmp/directories') }
-end
-
-cookbook_file '/etc/nginx/sites-available/default.conf.save' do
-  source 'default.conf'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  action :create
-end
-
-cookbook_file '/etc/nginx/nginx.conf' do
-  source 'nginx.conf'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  action :create
-end
-
-template '/etc/nginx/sites-available/default.conf' do
-  source 'default.conf.erb'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  variables ({
-    :staticname => node['staticname'],
-    :fqdn       => node['fqdn'],
-    :host       => node['hostname'],
-    :port       => node['port'],
-  })
-  action :create
-end
-
-link '/etc/nginx/sites-enabled/default.conf' do
-  to '/etc/nginx/sites-available/default.conf'
-  link_type :symbolic
-end
-
-template '/usr/share/nginx/html/index.html' do
-  source 'index.html.erb'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  variables ({
-    :fqdn => node['fqdn'],
-  })
-  action :create
+if Dir.exist?('/etc/nginx/sites-available')
+  template '/etc/nginx/sites-available/default' do
+    source 'lb.conf.erb'
+    owner 'root'
+    group 'root'
+    mode '0644'
+    variables ({
+      :web1 => node['nginx']['web1'],
+      :web2 => node['nginx']['web2'],
+      :web3 => node['nginx']['web3'],
+    })
+    action :create
+  end
+else
+  template '/etc/nginx/conf.d/default.default.conf' do
+    source 'lb.conf.erb'
+    owner 'root'
+    group 'root'
+    mode '0644'
+    variables ({
+      :web1 => node['nginx']['web1'],
+      :web2 => node['nginx']['web2'],
+      :web3 => node['nginx']['web3'],
+    })
+    action :create
+  end
 end
 
 service 'nginx' do
