@@ -22,9 +22,9 @@ end
 
 if platform == 'centos' || platform == 'fedora'
   bash 'Update cache and Update' do
-  code <<-EOH
-    yum makecache && yum update -y
-    touch /tmp/updated
+    code <<-EOH
+      yum makecache && yum update -y
+      touch /tmp/updated
     EOH
     action :run
     not_if { File.exist?('/tmp/updated') }
