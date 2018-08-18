@@ -1,0 +1,13 @@
+# this template goes in /etc/nginx/conf.d/load-balancer.conf
+upstream backend {
+  server <%= @web1 %>;
+  server <%= @web2 %>;
+  server <%= @web3 %>;
+}
+
+ server {
+  listen 80;
+    location / {
+      proxy_pass http://backend;
+    }
+ }
