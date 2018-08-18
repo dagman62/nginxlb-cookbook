@@ -35,7 +35,7 @@ package 'nginx' do
   action :install
 end
 
-if Dir.exist?('/etc/nginx/sites-available')
+if platform == 'ubuntu' || platform == 'debian'
   template '/etc/nginx/sites-available/default' do
     source 'lb.conf.erb'
     owner 'root'
@@ -49,7 +49,7 @@ if Dir.exist?('/etc/nginx/sites-available')
     action :create
   end
 else
-  template '/etc/nginx/conf.d/default.default.conf' do
+  template '/etc/nginx/conf.d/default.conf' do
     source 'lb.conf.erb'
     owner 'root'
     group 'root'
