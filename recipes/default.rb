@@ -48,6 +48,13 @@ if platform == 'ubuntu' || platform == 'debian'
     })
     action :create
   end
+  cookbook_file '/etc/nginx/nginx.conf' do
+    source 'nginx.conf'
+    owner 'root'
+    group 'root'
+    mode '0644'
+    action :create
+  end
 else
   template '/etc/nginx/conf.d/default.conf' do
     source 'lb.conf.erb'
