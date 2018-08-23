@@ -42,7 +42,6 @@ if platform == 'ubuntu' || platform == 'debian'
     group 'root'
     mode '0644'
     action :create
-    notifies :restart, 'service[nginx]', :immediately
   end
   cookbook_file '/etc/nginx/nginx.conf' do
     source 'nginx.conf'
@@ -58,7 +57,6 @@ else
     group 'root'
     mode '0644'
     action :create
-    notifies :restart, 'service[nginx]', :immediately
   end
 end
 
@@ -66,8 +64,14 @@ service 'nginx' do
   action [:start, :enable]
 end
 
-service 'nginx' do
-  action :restart
+if platform == 'ubuntu' || platform == 'debian'
+  service 'nginx' do
+    subscribes :restart, 'file[/etc/nginx/sites-available/default]', :immediately
+  end
+else
+  service 'nginx' do
+    subscribes :restart, 'file[/etc/nginx/conf.d/default.conf]', :immediately
+  end
 end
 
 
