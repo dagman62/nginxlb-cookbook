@@ -41,12 +41,6 @@ if platform == 'ubuntu' || platform == 'debian'
     owner 'root'
     group 'root'
     mode '0644'
-    variables ({
-      :web1 => node['nginx']['web1'],
-      :web2 => node['nginx']['web2'],
-      :web3 => node['nginx']['web3'],
-      :web4 => node['nginx']['web4'],
-    })
     action :create
   end
   cookbook_file '/etc/nginx/nginx.conf' do
@@ -62,12 +56,6 @@ else
     owner 'root'
     group 'root'
     mode '0644'
-    variables ({
-      :web1 => node['nginx']['web1'],
-      :web2 => node['nginx']['web2'],
-      :web3 => node['nginx']['web3'],
-      :web4 => node['nginx']['web4'],
-    })
     action :create
   end
 end
