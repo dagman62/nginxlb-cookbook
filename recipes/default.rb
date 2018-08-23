@@ -64,14 +64,8 @@ service 'nginx' do
   action [:start, :enable]
 end
 
-if platform == 'ubuntu' || platform == 'debian'
-  service 'nginx' do
-    subscribes :restart, 'file[/etc/nginx/sites-available/default]', :immediately
-  end
-else
-  service 'nginx' do
-    subscribes :restart, 'file[/etc/nginx/conf.d/default.conf]', :immediately
-  end
+service 'nginx' do
+  action :restart
 end
 
 
