@@ -8,7 +8,9 @@ else
   node.default['distro'] = node['platform']
 end
 
-node.default['nginx']['web1'] = 'dragon.example.com'
-node.default['nginx']['web2'] = 'shadow.example.com'
-node.default['nginx']['web3'] = 'hornet.example.com'
-node.default['nginx']['web4'] = 'mercury.example.com'
+default['nginx']['server']['web1'] = 'dragon.example.com'
+default['nginx']['server']['web2'] = 'shadow.example.com'
+default['nginx']['server']['web3'] = 'hornet.example.com'
+default['nginx']['server']['web4'] = ''
+default['nginx']['server']['web5'] = ''
+default['nginx']['server']['web6'] = ''

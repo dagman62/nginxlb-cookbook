@@ -1,9 +1,10 @@
 # this template goes in /etc/nginx/conf.d/load-balancer.conf
 upstream backend {
-  server <%= @web1 %>;
-  server <%= @web2 %>;
-  server <%= @web3 %>;
-  server <%= @web4 %>;
+<% node['nginx']['server'].each do |k , v| -%>
+  <% unless v.empty? -%>
+  server <%= v %>; # <%= k %>
+  <% end %>
+<% end %>
 }
 
  server {
