@@ -45,6 +45,7 @@ if platform == 'ubuntu' || platform == 'debian'
       :web1 => node['nginx']['web1'],
       :web2 => node['nginx']['web2'],
       :web3 => node['nginx']['web3'],
+      :web4 => node['nginx']['web4'],
     })
     action :create
   end
@@ -65,6 +66,7 @@ else
       :web1 => node['nginx']['web1'],
       :web2 => node['nginx']['web2'],
       :web3 => node['nginx']['web3'],
+      :web4 => node['nginx']['web4'],
     })
     action :create
   end
